@@ -14,5 +14,9 @@
 
 .selected {
   border-bottom: #fa4549 2px solid;
-  font-weight: 800;
+  font-weight: 600;
+}
+
+.link {
+  text-decoration: none;
 }

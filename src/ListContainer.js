@@ -1,7 +1,8 @@
-import React, { useState } from "react"
-
-import cx from "clsx"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import styles from "./ListContainer.module.css"
+import axios from "axios"
+import { GITHUB_API } from "./api"
 
 import Button from "./components/Button"
 import ListItem from "./components/ListItem"
@@ -11,8 +12,24 @@ import Pagination from "./components/Pagination"
 
 const ListContainer = () => {
   const [inputValue, setInputValue] = useState("is:pr is:open")
+  const [checked, setChecked] = useState(false)
   const [list, setList] = useState([])
-  const [page, setPage] = useState(1)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = parseInt(searchParams.get("page") ?? 1, 10)
+  const state = searchParams.get("state")
+  debugger
+
+  async function getData(params) {
+    const data = await axios.get(`${GITHUB_API}/repos/facebook/react/issues`, {
+      params,
+    })
+    setList(data.data)
+  }
+
+  useEffect(() => {
+    getData(searchParams)
+  }, [searchParams, state])
 
   return (
     <>
@@ -34,18 +51,18 @@ const ListContainer = () => {
             New Issue
           </Button>
         </div>
-        <OpenCloseFilters />
-        <ListFilter onChangeFilter={(filteredData) => {}} />
+        <OpenCloseFilters
+          isOpenMode={state !== "closed"}
+          onClickMode={(mode) => setSearchParams({ mode })}
+        />
+        <ListFilter onChangeFilter={(params) => setSearchParams(params)} />
         <div className={styles.container}>
-          {list.map((listItem, index) => (
+          {list.map((item) => (
             <ListItem
-              key={index}
-              badges={[
-                {
-                  color: "red",
-                  title: "Bug",
-                },
-              ]}
+              key={item.id}
+              data={item}
+              checked={checked}
+              onClickCheckBox={() => setChecked((checked) => !checked)}
             />
           ))}
         </div>
@@ -54,7 +71,9 @@ const ListContainer = () => {
         <Pagination
           maxPage={10}
           currentPage={page}
-          onClickPageButton={(number) => setPage(number)}
+          onClickPageButton={(pageNumber) =>
+            setSearchParams({ page: pageNumber })
+          }
         />
       </div>
     </>

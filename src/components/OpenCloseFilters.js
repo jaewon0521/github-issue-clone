@@ -1,28 +1,18 @@
-import React, { useState } from "react"
+import React from "react"
 import OpenCloseFilter from "./OpenCloseFilter"
 
-const OpenCloseFilters = () => {
-  const [isOpenMode, setIsOpenMode] = useState(true)
-
-  // const data = getData();
-  // const openData = data.filter((d) => d.state === "open")
-  // const closeData = data.filter((d) => d.state === "close")
-
-  const openModeDataSize = 1
-  const closeModeDataSize = 2
+const OpenCloseFilters = ({ isOpenMode, onClickMode }) => {
   return (
     <>
       <OpenCloseFilter
-        size={openModeDataSize}
         state="Open"
         selected={isOpenMode}
-        onClick={() => setIsOpenMode(true)}
+        onClick={() => onClickMode("open")}
       />
       <OpenCloseFilter
-        size={closeModeDataSize}
         state="Close"
         selected={!isOpenMode}
-        onClick={() => setIsOpenMode(false)}
+        onClick={() => onClickMode("closed")}
       />
     </>
   )

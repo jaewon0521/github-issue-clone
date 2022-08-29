@@ -20,3 +20,21 @@
   justify-content: center;
   margin-left: 3px;
 }
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subjectName {
+  color: #0969da;
+}
+
+.subjectName > span:last-child {
+  font-weight: 600;
+}
+
+.slash {
+  margin-left: 5px;
+  margin-right: 5px;
+}

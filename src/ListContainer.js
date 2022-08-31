@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import styles from "./ListContainer.module.css"
 import axios from "axios"
 import { GITHUB_API } from "./api"
@@ -18,7 +18,6 @@ const ListContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const page = parseInt(searchParams.get("page") ?? 1, 10)
   const state = searchParams.get("state")
-  debugger
 
   async function getData(params) {
     const data = await axios.get(`${GITHUB_API}/repos/facebook/react/issues`, {
@@ -41,15 +40,17 @@ const ListContainer = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button
-            style={{
-              fontSize: "14px",
-              backgroundColor: "green",
-              color: "white",
-            }}
-          >
-            New Issue
-          </Button>
+          <Link to="/new" className={styles.link}>
+            <Button
+              style={{
+                fontSize: "14px",
+                backgroundColor: "green",
+                color: "white",
+              }}
+            >
+              New Issue
+            </Button>
+          </Link>
         </div>
         <OpenCloseFilters
           isOpenMode={state !== "closed"}

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import { QueryClientProvider, QueryClient } from "react-query"
 import Actions from "./components/Actions"
 import Code from "./components/Code"
 import CreateIssue from "./components/CreateIssue"
@@ -9,9 +10,10 @@ import Security from "./components/Security"
 import Header from "./Header"
 import Issue from "./pages/Issue"
 
+const queryClient = new QueryClient()
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Nav />
       <Header />
       <Routes>
@@ -24,7 +26,7 @@ function App() {
         <Route path="/security" element={<Security />} />
         <Route path="/actions" element={<Actions />} />
       </Routes>
-    </>
+    </QueryClientProvider>
   )
 }
 
